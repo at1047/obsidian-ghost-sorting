@@ -1,22 +1,46 @@
 # obsidian-ghost-sorting
 
-This plugin automatically hides leading numbers (prefixed with underscore) in file and folder names in Obsidian's file explorer while keeping them in the actual file names for sorting purposes.
+This plugin hides prefixes used for sorting in file and folder names in Obsidian while preserving the real filename to utilize native ordering behavior.
+
+### Why this plugin
+I wanted a way to sort files and folders that does not rely on metadata files and works in vanilla Obsidian as well as other text editors.
 
 ## Features
 
-- **Automatic Detection**: Detects and hides underscore-prefixed numbers at the beginning of file/folder names
-- **Flexible Patterns**: Supports various number formats with underscore prefix:
+- **Automatic Detection**: Detects and hides sortable prefixes at the beginning of file/folder names
+- **Flexible Patterns**: Supports underscore-number and omega-number prefixes:
   - `_1 Control Seminars` → `Control Seminars`
   - `_01 Notes` → `Notes`
   - `_1. Introduction` → `Introduction`
   - `_1- Chapter` → `Chapter`
+- **Bottom Grouping with Omega**: Use `Ω_` + number to move notes to the bottom section while still sorting alphanumerically inside that section:
+  - `Ω_1 Archive` → `Archive`
+  - `Ω_20 Someday` → `Someday`
 - **Hides in Multiple Places**: Numbers are hidden in:
   - File explorer sidebar
   - Page headings when files are opened
   - View headers
-- **Preserves Sorting**: The actual file names remain unchanged, so sorting by name still works
-- **Non-Destructive**: Numbers are only hidden visually; the actual file names are not modified
-- **Dynamic Updates**: Automatically processes new files and folders as they appear
+
+## How It Works
+
+The plugin scans file and title UI elements and, when a supported sortable prefix is found, hides that prefix from display while keeping it in the real filename.
+
+1. Detects a sortable prefix like `_1 ` or `Ω_1 `
+2. Cleans the file name in the UI
+
+## Supported Prefix Patterns
+
+- `_1 ` (underscore + number + space)
+- `_01 ` (underscore + zero-padded number + space)
+- `_1. ` (underscore + number + dot + space)
+- `_1- ` (underscore + number + dash + space)
+- `Ω_1 ` (omega + underscore + number + space)
+- `Ω_01 ` (omega + underscore + zero-padded number + space)
+
+## Using Omega for Bottom Sorting
+
+Use the uppercase omega character `Ω` as a high-sort prefix marker. Prefix notes with `Ω_` + number to keep them grouped at the bottom. You can obtain this symbol by copy and pasting it from the settings tab of this plugin.
+
 
 ## Installation
 
@@ -40,47 +64,6 @@ YourVault/
             ├── manifest.json
             └── styles.css
 ```
-
-## How It Works
-
-The plugin scans the file explorer for elements with the class `.tree-item-inner.nav-file-title-content` and `.tree-item-inner.nav-folder-title-content`. When it finds a name starting with a number followed by a space, dot, or dash, it:
-
-1. Splits the text into the number part and the display part
-2. Wraps each part in a separate span element
-3. Hides the number span using CSS
-4. Displays only the text part
-
-The original file names remain unchanged in your vault, so:
-- Sorting continues to work based on the numbers
-- Links and references remain intact
-- The actual files are never modified
-
-## Supported Number Patterns
-
-- `_1 ` (underscore + number + space)
-- `_01 ` (underscore + zero-padded number + space)
-- `_1. ` (underscore + number + dot + space)
-- `_1- ` (underscore + number + dash + space)
-
-## Customization
-
-You can customize the behavior by editing the `main.js` file:
-
-- **Change the pattern**: Modify the `numberPattern` regex in the `processFileExplorer()` method
-- **Adjust update frequency**: Change the interval in `registerInterval()` (default: 1000ms)
-
-## Troubleshooting
-
-**Numbers not hiding?**
-- Make sure the plugin is enabled in Settings → Community plugins
-- Try restarting Obsidian
-- Check that your file names match one of the supported patterns
-
-**Performance issues?**
-- Increase the interval in the `registerInterval()` call (e.g., from 1000 to 2000)
-
-**Want to disable temporarily?**
-- Simply toggle off the plugin in Settings → Community plugins
 
 ## Uninstalling
 
