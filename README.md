@@ -1,4 +1,4 @@
-# Hide Sorting Numbers - Obsidian Plugin
+# obsidian-ghost-sorting
 
 This plugin automatically hides leading numbers (prefixed with underscore) in file and folder names in Obsidian's file explorer while keeping them in the actual file names for sorting purposes.
 
@@ -23,11 +23,11 @@ This plugin automatically hides leading numbers (prefixed with underscore) in fi
 ### Manual Installation
 
 1. Download the plugin files (`main.js`, `manifest.json`, and `styles.css`)
-2. Create a new folder in your vault: `.obsidian/plugins/hide-sorting-numbers/`
+2. Create a new folder in your vault: `.obsidian/plugins/obsidian-ghost-sorting/`
 3. Copy all three files into this folder
 4. Restart Obsidian or reload the app
 5. Go to Settings → Community plugins
-6. Enable "Hide Sorting Numbers"
+6. Enable "obsidian-ghost-sorting"
 
 ### Directory Structure
 
@@ -35,7 +35,7 @@ This plugin automatically hides leading numbers (prefixed with underscore) in fi
 YourVault/
 └── .obsidian/
     └── plugins/
-        └── hide-sorting-numbers/
+        └── obsidian-ghost-sorting/
             ├── main.js
             ├── manifest.json
             └── styles.css
@@ -85,7 +85,7 @@ You can customize the behavior by editing the `main.js` file:
 ## Uninstalling
 
 1. Disable the plugin in Settings → Community plugins
-2. Delete the `.obsidian/plugins/hide-sorting-numbers/` folder
+2. Delete the `.obsidian/plugins/obsidian-ghost-sorting/` folder
 3. Restart Obsidian
 
 The plugin will restore all original file name displays when disabled.
