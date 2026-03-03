@@ -1,6 +1,6 @@
 {
   "id": "obsidian-ghost-sorting",
-  "name": "obsidian-ghost-sorting",
+  "name": "Ghost Sorting",
   "version": "1.0.0",
   "minAppVersion": "0.15.0",
   "description": "Hides leading numbers in file and folder names while keeping them for sorting purposes",
