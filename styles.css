@@ -7,3 +7,12 @@
     content: attr(data-display-text);
     font-size: var(--original-font-size);
 }
+
+/* Show full name for links on the active (cursor) line */
+.hide-sorting-numbers .cm-active .cm-hmd-internal-link a[data-display-text] {
+    font-size: var(--original-font-size);
+}
+
+.hide-sorting-numbers .cm-active .cm-hmd-internal-link a[data-display-text]::after {
+    content: none;
+}

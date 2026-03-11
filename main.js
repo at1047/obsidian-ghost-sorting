@@ -64,7 +64,7 @@ module.exports = class HideSortingNumbersPlugin extends Plugin {
     }
 
     processAll() {
-        document.querySelectorAll('.nav-file-title-content, .nav-folder-title-content, .inline-title, .view-header-title, .titlebar-text, .workspace-tab-header-inner-title').forEach(el => {
+        document.querySelectorAll('.nav-file-title-content, .nav-folder-title-content, .inline-title, .view-header-title, .titlebar-text, .workspace-tab-header-inner-title, .internal-link, .cm-hmd-internal-link a').forEach(el => {
             const match = el.textContent.match(/^(_\d+[\.\-\s]+|Ω_\d+[\.\-\s]+)/i);
             if (match) {
                 el.style.setProperty('--original-font-size', el.style.getPropertyValue('--original-font-size') || getComputedStyle(el).fontSize);
