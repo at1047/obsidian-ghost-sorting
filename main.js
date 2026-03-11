@@ -28,13 +28,21 @@ module.exports = class HideSortingNumbersPlugin extends Plugin {
 
         this.updateState();
         
+        // Watch for DOM changes and class changes (e.g. .cm-active on the current line)
         this.observer = new MutationObserver(() => this.settings.hideNumbers && this.processAll());
-        this.observer.observe(document.body, { childList: true, subtree: true });
+        this.observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['class'],
+        });
 
         // Update when switching tabs/panes
-        this.registerEvent(this.app.workspace.on('active-leaf-change', () => {
-            this.processAll();
-        }));
+        this.registerEvent(
+            this.app.workspace.on('active-leaf-change', () => {
+                this.processAll();
+            }),
+        );
 
         this.addCommand({
             id: 'toggle-hide-sorting-numbers',
@@ -64,17 +72,35 @@ module.exports = class HideSortingNumbersPlugin extends Plugin {
     }
 
     processAll() {
-        document.querySelectorAll('.nav-file-title-content, .nav-folder-title-content, .inline-title, .view-header-title, .titlebar-text, .workspace-tab-header-inner-title, .internal-link, .cm-hmd-internal-link').forEach(el => {
-            const match = el.textContent.match(/^(_\d+[\.\-\s]+|Ω_\d+[\.\-\s]+)/i);
-            if (match) {
-                el.style.setProperty('--original-font-size', el.style.getPropertyValue('--original-font-size') || getComputedStyle(el).fontSize);
-                el.setAttribute('data-display-text', el.textContent.substring(match[1].length));
-            } else if (el.hasAttribute('data-display-text')) {
-                // Clear attribute if element no longer has a sorting prefix
-                el.removeAttribute('data-display-text');
-                el.style.removeProperty('--original-font-size');
-            }
-        });
+        document
+            .querySelectorAll(
+                '.nav-file-title-content, .nav-folder-title-content, .inline-title, .view-header-title, .titlebar-text, .workspace-tab-header-inner-title, .internal-link, .cm-hmd-internal-link',
+            )
+            .forEach(el => {
+                const isActiveLine = !!el.closest('.cm-active');
+
+                // Never hide prefixes on the actively edited line in the editor
+                if (isActiveLine) {
+                    if (el.hasAttribute('data-display-text')) {
+                        el.removeAttribute('data-display-text');
+                        el.style.removeProperty('--original-font-size');
+                    }
+                    return;
+                }
+
+                const match = el.textContent.match(/^(_\d+[\.\-\s]+|Ω_\d+[\.\-\s]+)/i);
+                if (match) {
+                    el.style.setProperty(
+                        '--original-font-size',
+                        el.style.getPropertyValue('--original-font-size') || getComputedStyle(el).fontSize,
+                    );
+                    el.setAttribute('data-display-text', el.textContent.substring(match[1].length));
+                } else if (el.hasAttribute('data-display-text')) {
+                    // Clear attribute if element no longer has a sorting prefix
+                    el.removeAttribute('data-display-text');
+                    el.style.removeProperty('--original-font-size');
+                }
+            });
     }
 
     clearAll() {
